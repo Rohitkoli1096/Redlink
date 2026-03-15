@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Donor Registration Step 3</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Inter',sans-serif;
+}
+
+body{
+background:#f8fafc;
+color:#111;
+}
+
+.header{
+display:flex;
+align-items:center;
+justify-content:center;
+position:relative;
+padding:18px;
+font-weight:700;
+font-size:20px;
+background:white;
+border-bottom:1px solid #eee;
+}
+
+.back{
+position:absolute;
+left:18px;
+font-size:22px;
+color:#ef4444;
+cursor:pointer;
+}
+
+.page{
+padding:20px;
+max-width:700px;
+margin:auto;
+}
+
+.step{
+display:flex;
+justify-content:space-between;
+margin-bottom:8px;
+font-weight:600;
+}
+
+.progress{
+height:8px;
+background:#fde2e4;
+border-radius:20px;
+overflow:hidden;
+margin-bottom:25px;
+}
+
+.progress-bar{
+height:100%;
+width:60%;
+background:#ef4444;
+}
+
+.section{
+margin-bottom:25px;
+}
+
+.section-title{
+font-weight:700;
+margin-bottom:12px;
+display:flex;
+align-items:center;
+gap:8px;
+}
+
+.input-group{
+margin-bottom:14px;
+}
+
+.input-group label{
+font-size:13px;
+font-weight:600;
+}
+
+.input{
+margin-top:6px;
+background:white;
+border:1px solid #e5e7eb;
+border-radius:10px;
+padding:12px;
+}
+
+.input input,
+.input select{
+width:100%;
+border:none;
+outline:none;
+font-size:14px;
+background:none;
+}
+
+.availability{
+display:flex;
+gap:10px;
+}
+
+.availability div{
+flex:1;
+padding:12px;
+border:1px solid #ddd;
+border-radius:10px;
+text-align:center;
+cursor:pointer;
+font-weight:600;
+background:white;
+}
+
+.availability .active{
+border-color:#ef4444;
+color:#ef4444;
+background:#fee2e2;
+}
+
+.days{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:10px;
+}
+
+.day{
+padding:10px;
+border-radius:10px;
+border:1px solid #ddd;
+text-align:center;
+cursor:pointer;
+background:white;
+font-size:13px;
+}
+
+.day.active{
+border-color:#ef4444;
+background:#fee2e2;
+color:#ef4444;
+}
+
+.btn{
+width:100%;
+background:#ef4444;
+color:white;
+border:none;
+padding:16px;
+border-radius:12px;
+font-size:16px;
+font-weight:600;
+cursor:pointer;
+margin-top:10px;
+}
+
+.footer{
+text-align:center;
+font-size:12px;
+color:#6b7280;
+margin-top:10px;
+}
+
+/* Mobile Toast Alert */
+
+#toast{
+position:fixed;
+bottom:30px;
+left:50%;
+transform:translateX(-50%);
+background:#111;
+color:#fff;
+padding:12px 18px;
+border-radius:25px;
+font-size:14px;
+opacity:0;
+transition:0.3s;
+z-index:9999;
+}
+
+#toast.show{
+opacity:1;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header">
+<div class="back" onclick="window.location.href='register.html'">←</div>
+Donor Registration
+</div>
+
+<div class="page">
+
+<div class="step">
+<span>Location & Availability</span>
+<span style="color:#ef4444;">Step 3 of 5</span>
+</div>
+
+<div class="progress">
+<div class="progress-bar"></div>
+</div>
+
+<!-- CONTACT -->
+
+<div class="section">
+
+<div class="section-title">📞 Contact Information</div>
+
+<div class="input-group">
+<label>Phone Number</label>
+<div class="input">
+<input type="tel" id="phone" placeholder="+91 7020572400">
+</div>
+</div>
+
+<div class="input-group">
+<label>Email</label>
+<div class="input">
+<input type="email" id="email" placeholder="example@email.com">
+</div>
+</div>
+
+</div>
+
+<!-- LOCATION -->
+
+<div class="section">
+
+<div class="section-title">📍 Location</div>
+
+<div class="input-group">
+<label>City</label>
+<div class="input">
+<input type="text" id="city" placeholder="Enter your city">
+</div>
+</div>
+
+<div class="input-group">
+<label>Pin Code</label>
+<div class="input">
+<input type="number" id="pincode" placeholder="Enter pin code">
+</div>
+</div>
+
+</div>
+
+<!-- AVAILABILITY -->
+
+<div class="section">
+
+<div class="section-title">🚑 Donation Availability</div>
+
+<div class="availability">
+
+<div onclick="setAvailability(this)">Emergency</div>
+<div onclick="setAvailability(this)">Scheduled</div>
+
+</div>
+
+</div>
+
+<!-- DAYS -->
+
+<div class="section">
+
+<div class="section-title">📅 Preferred Donation Days</div>
+
+<div class="days">
+
+<div class="day">Mon</div>
+<div class="day">Tue</div>
+<div class="day">Wed</div>
+<div class="day">Thu</div>
+<div class="day">Fri</div>
+<div class="day">Sat</div>
+<div class="day">Sun</div>
+
+</div>
+
+</div>
+
+<!-- TIME -->
+
+<div class="section">
+
+<div class="section-title">⏰ Preferred Time</div>
+
+<div class="input">
+<select id="preferredTime">
+<option>Morning (8AM - 12PM)</option>
+<option>Afternoon (12PM - 4PM)</option>
+<option>Evening (4PM - 8PM)</option>
+</select>
+</div>
+
+</div>
+
+<button class="btn" onclick="saveStep3()">Continue →</button>
+
+<div class="footer">
+Your information helps hospitals contact you faster during emergencies.
+</div>
+
+</div>
+
+<div id="toast"></div>
+
+<script>
+
+// Toast Alert
+function showToast(msg){
+let toast=document.getElementById("toast")
+toast.innerText=msg
+toast.classList.add("show")
+
+setTimeout(()=>{
+toast.classList.remove("show")
+},2500)
+}
+
+
+// Availability selection
+function setAvailability(el){
+document.querySelectorAll(".availability div").forEach(btn=>{
+btn.classList.remove("active")
+})
+el.classList.add("active")
+}
+
+
+// Day selection
+document.querySelectorAll(".day").forEach(day=>{
+day.onclick=()=>{
+day.classList.toggle("active")
+}
+})
+
+
+// Save Step 3
+
+function saveStep3(){
+
+let phone=document.getElementById("phone").value.trim()
+let email=document.getElementById("email").value.trim()
+let city=document.getElementById("city").value.trim()
+let pincode=document.getElementById("pincode").value.trim()
+let preferredTime=document.getElementById("preferredTime").value
+
+let availability=document.querySelector(".availability .active")
+
+let days=[]
+document.querySelectorAll(".day.active").forEach(d=>{
+days.push(d.innerText)
+})
+
+
+if(phone===""){
+showToast("Enter phone number")
+return
+}
+
+if(!/^[0-9]{10}$/.test(phone)){
+showToast("Phone must be 10 digits")
+return
+}
+
+if(email===""){
+showToast("Enter email address")
+return
+}
+
+if(!/\S+@\S+\.\S+/.test(email)){
+showToast("Enter valid email")
+return
+}
+
+if(city===""){
+showToast("Enter city")
+return
+}
+
+if(pincode===""){
+showToast("Enter pin code")
+return
+}
+
+if(!availability){
+showToast("Select donation availability")
+return
+}
+
+if(days.length===0){
+showToast("Select at least one donation day")
+return
+}
+
+
+// Save data
+
+let donorData = JSON.parse(localStorage.getItem("donorData")) || {}
+
+donorData.phone=phone
+donorData.email=email
+donorData.city=city
+donorData.pincode=pincode
+donorData.preferredTime=preferredTime
+donorData.availability=availability.innerText
+donorData.preferredDays=days
+
+localStorage.setItem("donorData",JSON.stringify(donorData))
+
+
+window.location.href="register_step4.html"
+
+}
+
+</script>
+
+</body>
+</html>

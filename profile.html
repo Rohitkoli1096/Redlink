@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>RedLink Profile</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Inter',sans-serif;
+}
+
+body{
+background:#f4f6fb;
+padding-bottom:120px;
+}
+
+/* HEADER */
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:18px;
+}
+
+.title{
+font-size:20px;
+font-weight:700;
+}
+
+/* PROFILE */
+
+.profile{
+text-align:center;
+padding:20px;
+}
+
+.avatar{
+width:120px;
+height:120px;
+border-radius:50%;
+margin:auto;
+background:#ddd;
+background-size:cover;
+background-position:center;
+border:5px solid #e63946;
+}
+
+.name{
+font-size:26px;
+font-weight:700;
+margin-top:10px;
+}
+
+/* BADGES */
+
+.badges{
+display:flex;
+justify-content:center;
+gap:8px;
+margin-top:8px;
+}
+
+.badge{
+background:#0d6efd;
+color:white;
+padding:4px 10px;
+border-radius:20px;
+font-size:11px;
+}
+
+/* VERIFIED */
+
+.verified{
+color:#1d9bf0;
+margin-left:6px;
+}
+
+/* IMPACT */
+
+.impact{
+margin:20px;
+padding:25px;
+border-radius:25px;
+background:linear-gradient(135deg,#b30000,#e63946);
+color:white;
+text-align:center;
+}
+
+.impact h1{
+font-size:40px;
+}
+
+/* STATS */
+
+.stats{
+display:flex;
+gap:12px;
+padding:0 20px;
+}
+
+.stat{
+flex:1;
+background:white;
+border-radius:18px;
+padding:18px;
+text-align:center;
+}
+
+/* BLOOD CARD */
+
+.blood-card{
+background:white;
+margin:20px;
+padding:20px;
+border-radius:18px;
+}
+
+.blood-type{
+font-size:40px;
+font-weight:700;
+color:#e63946;
+}
+
+/* ACHIEVEMENTS */
+
+.achievements{
+display:flex;
+overflow-x:auto;
+gap:10px;
+padding:20px;
+}
+
+.achieve{
+min-width:110px;
+background:white;
+padding:15px;
+border-radius:15px;
+text-align:center;
+}
+
+/* ACCOUNT */
+
+.account{
+background:white;
+margin:20px;
+padding:20px;
+border-radius:18px;
+}
+
+.field{
+margin-top:12px;
+}
+
+.label{
+font-size:12px;
+color:#777;
+}
+
+.value{
+background:#f1f5f9;
+padding:12px;
+border-radius:12px;
+margin-top:5px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+/* SWITCH */
+
+.toggle{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px;
+margin:20px;
+background:white;
+border-radius:15px;
+}
+
+.switch{
+position:relative;
+width:50px;
+height:24px;
+}
+
+.switch input{
+opacity:0;
+}
+
+.slider{
+position:absolute;
+background:#ccc;
+top:0;
+bottom:0;
+left:0;
+right:0;
+border-radius:24px;
+}
+
+.slider:before{
+content:"";
+position:absolute;
+height:18px;
+width:18px;
+left:3px;
+bottom:3px;
+background:white;
+border-radius:50%;
+}
+
+input:checked + .slider{
+background:#e63946;
+}
+
+input:checked + .slider:before{
+transform:translateX(26px);
+}
+
+/* NAVIGATION SAME AS DASHBOARD */
+
+.nav{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+background:white;
+display:flex;
+justify-content:space-around;
+padding:12px;
+box-shadow:0 -5px 20px rgba(0,0,0,0.1);
+}
+
+.nav-item{
+text-align:center;
+font-size:12px;
+color:#666;
+cursor:pointer;
+}
+
+.nav-item.active{
+color:#e63946;
+}
+
+.nav-item i{
+display:block;
+font-size:20px;
+margin-bottom:3px;
+}
+
+/* TOAST ALERT */
+
+.toast{
+position:fixed;
+bottom:80px;
+left:50%;
+transform:translateX(-50%);
+background:#111;
+color:white;
+padding:12px 18px;
+border-radius:25px;
+opacity:0;
+transition:.3s;
+}
+
+.toast.show{
+opacity:1;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="toast" id="toast"></div>
+
+<!-- HEADER -->
+
+<div class="header">
+
+<i class="fa-solid fa-arrow-left"></i>
+
+<div class="title">Profile</div>
+
+<i class="fa-solid fa-bell" onclick="showNotification()"></i>
+
+</div>
+
+<!-- PROFILE -->
+
+<div class="profile">
+
+<div class="avatar" id="profilePic"></div>
+
+<div class="name" id="name">User</div>
+
+<div class="badges" id="badges"></div>
+
+</div>
+
+<!-- IMPACT -->
+
+<div class="impact">
+
+<p>Total Impact</p>
+
+<h1 id="lives">0</h1>
+
+<p>Lives Saved</p>
+
+</div>
+
+<!-- STATS -->
+
+<div class="stats">
+
+<div class="stat">
+
+<h2 id="donations">0</h2>
+
+<p>Donations</p>
+
+</div>
+
+<div class="stat">
+
+<h2 id="days">0</h2>
+
+<p>Days to next</p>
+
+</div>
+
+</div>
+
+<!-- BLOOD -->
+
+<div class="blood-card">
+
+<p>Blood Group</p>
+
+<div class="blood-type" id="blood">--</div>
+
+</div>
+
+<!-- ACHIEVEMENTS -->
+
+<h3 style="padding-left:20px;">Achievements</h3>
+
+<div class="achievements" id="achievements"></div>
+
+<!-- ACCOUNT -->
+
+<div class="account">
+
+<h3>Account Details</h3>
+
+<div class="field">
+
+<div class="label">EMAIL</div>
+
+<div class="value">
+<span id="email"></span>
+<i class="fa-solid fa-circle-check verified"></i>
+</div>
+
+</div>
+
+<div class="field">
+
+<div class="label">PHONE</div>
+
+<div class="value">
+<span id="phone"></span>
+<i class="fa-solid fa-circle-check verified"></i>
+</div>
+
+</div>
+
+<div class="field">
+
+<div class="label">ADDRESS</div>
+
+<div class="value" id="address"></div>
+
+</div>
+
+</div>
+
+<!-- AVAILABILITY -->
+
+<div class="toggle">
+
+<span>Available for Donation</span>
+
+<label class="switch">
+<input type="checkbox" id="availability">
+<span class="slider"></span>
+</label>
+
+</div>
+
+<!-- NAVIGATION (SAME AS DASHBOARD) -->
+
+<div class="nav">
+
+<div class="nav-item" onclick="goHome()">
+<i class="fa-solid fa-house"></i>
+Home
+</div>
+
+<div class="nav-item" onclick="openAppointments()">
+<i class="fa-solid fa-calendar"></i>
+Appointments
+</div>
+
+<div class="nav-item active" onclick="openProfile()">
+<i class="fa-solid fa-user"></i>
+Profile
+</div>
+
+</div>
+
+<script>
+
+/* TOAST */
+
+function toast(msg){
+
+let t=document.getElementById("toast")
+t.innerText=msg
+t.classList.add("show")
+
+setTimeout(()=>{
+t.classList.remove("show")
+},2500)
+
+}
+
+/* LOAD USER DATA */
+
+const donor = JSON.parse(localStorage.getItem("donorData")) || {}
+
+name.innerText = donor.fullName || "Donor"
+blood.innerText = donor.bloodGroup || "--"
+email.innerText = donor.email || "-"
+phone.innerText = donor.phone || "-"
+address.innerText = donor.address || donor.city || "-"
+
+if(donor.profileImage){
+profilePic.style.backgroundImage="url("+donor.profileImage+")"
+}
+
+/* DONATION STATS */
+
+let donations = donor.donations || 0
+let lives = donations * 3
+
+animate("donations", donations)
+animate("lives", lives)
+
+/* NEXT DONATION */
+
+let lastDonation = donor.lastDonation || null
+let days = 0
+
+if(lastDonation){
+
+let last = new Date(lastDonation)
+let next = new Date(last)
+
+next.setDate(last.getDate()+90)
+
+let today = new Date()
+
+days = Math.max(0,Math.ceil((next-today)/(1000*60*60*24)))
+
+}
+
+document.getElementById("days").innerText = days
+
+/* ANIMATION */
+
+function animate(id,value){
+
+let count=0
+
+let interval=setInterval(()=>{
+
+count++
+document.getElementById(id).innerText=count
+
+if(count>=value)clearInterval(interval)
+
+},30)
+
+}
+
+/* ACHIEVEMENTS */
+
+let achievements=[]
+
+if(donations>=1) achievements.push("First Donation")
+if(donations>=5) achievements.push("5 Donations")
+if(lives>=10) achievements.push("Life Saver")
+
+achievements.forEach(a=>{
+
+document.getElementById("achievements").innerHTML+=`
+<div class="achieve">
+<i class="fa-solid fa-medal"></i>
+<p>${a}</p>
+</div>
+`
+
+})
+
+/* AVAILABILITY */
+
+availability.checked = donor.available || false
+
+availability.addEventListener("change",()=>{
+
+donor.available = availability.checked
+
+localStorage.setItem("donorData",JSON.stringify(donor))
+
+toast("Availability Updated")
+
+})
+
+/* NAVIGATION */
+
+function goHome(){
+window.location.href="dashboard.html"
+}
+
+function openAppointments(){
+toast("Appointments page coming soon")
+}
+
+function openProfile(){
+window.location.href="profile.html"
+}
+
+/* NOTIFICATION */
+
+function showNotification(){
+toast("No new notifications")
+}
+
+</script>
+
+</body>
+</html>

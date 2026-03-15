@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Donor Registration Step 4</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Inter',sans-serif;
+}
+
+body{
+background:#f8fafc;
+color:#111;
+}
+
+.header{
+display:flex;
+align-items:center;
+justify-content:center;
+position:relative;
+padding:18px;
+font-weight:700;
+font-size:20px;
+background:white;
+border-bottom:1px solid #eee;
+}
+
+.back{
+position:absolute;
+left:18px;
+font-size:22px;
+color:#ef4444;
+cursor:pointer;
+}
+
+.page{
+padding:20px;
+max-width:700px;
+margin:auto;
+}
+
+.step{
+display:flex;
+justify-content:space-between;
+margin-bottom:8px;
+font-weight:600;
+}
+
+.progress{
+height:8px;
+background:#fde2e4;
+border-radius:20px;
+overflow:hidden;
+margin-bottom:25px;
+}
+
+.progress-bar{
+height:100%;
+width:80%;
+background:#ef4444;
+}
+
+.section{
+margin-bottom:25px;
+}
+
+.section-title{
+font-weight:700;
+margin-bottom:12px;
+}
+
+.input-group{
+margin-bottom:14px;
+}
+
+.input-group label{
+font-size:13px;
+font-weight:600;
+}
+
+.input{
+margin-top:6px;
+background:white;
+border:1px solid #e5e7eb;
+border-radius:10px;
+padding:12px;
+}
+
+.input input,
+.input select{
+width:100%;
+border:none;
+outline:none;
+font-size:14px;
+background:none;
+}
+
+/* UPLOAD BOX */
+
+.upload-box{
+border:2px dashed #ef4444;
+border-radius:12px;
+padding:30px;
+text-align:center;
+background:white;
+cursor:pointer;
+transition:0.3s;
+}
+
+.upload-box.dragover{
+background:#fff5f5;
+}
+
+.upload-icon{
+font-size:40px;
+margin-bottom:10px;
+}
+
+#preview img{
+max-width:220px;
+margin-top:15px;
+border-radius:10px;
+}
+
+.progress-container{
+width:100%;
+height:8px;
+background:#eee;
+border-radius:20px;
+margin-top:15px;
+overflow:hidden;
+}
+
+.progress-upload{
+height:100%;
+width:0%;
+background:#ef4444;
+transition:width 0.3s;
+}
+
+.check{
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+.btn{
+width:100%;
+background:#ef4444;
+color:white;
+border:none;
+padding:16px;
+border-radius:12px;
+font-size:16px;
+font-weight:600;
+cursor:pointer;
+margin-top:15px;
+}
+
+.footer{
+text-align:center;
+font-size:12px;
+color:#6b7280;
+margin-top:10px;
+}
+
+/* TOAST */
+
+#toast{
+position:fixed;
+bottom:30px;
+left:50%;
+transform:translateX(-50%);
+background:#111;
+color:white;
+padding:12px 18px;
+border-radius:25px;
+opacity:0;
+transition:0.3s;
+}
+
+#toast.show{
+opacity:1;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header">
+<div class="back" onclick="history.back()">←</div>
+Donor Registration
+</div>
+
+<div class="page">
+
+<div class="step">
+<span>Verification</span>
+<span style="color:#ef4444;">Step 4 of 5</span>
+</div>
+
+<div class="progress">
+<div class="progress-bar"></div>
+</div>
+
+<!-- ID SECTION -->
+
+<div class="section">
+
+<div class="section-title">🪪 Identity Verification</div>
+
+<div class="input-group">
+<label>ID Type</label>
+<div class="input">
+<select id="idType">
+<option>Aadhar Card</option>
+<option>Driving License</option>
+<option>PAN Card</option>
+<option>Passport</option>
+</select>
+</div>
+</div>
+
+<div class="input-group">
+<label>ID Number</label>
+<div class="input">
+<input type="text" id="idNumber" placeholder="Enter ID Number">
+</div>
+</div>
+
+<div class="upload-box" id="dropArea">
+
+<div class="upload-icon">📤</div>
+
+<p>Drag & Drop ID Proof or Click to Upload</p>
+
+<input type="file" id="idUpload" accept="image/*,.pdf" hidden>
+
+<div id="preview"></div>
+
+<div class="progress-container">
+<div class="progress-upload" id="progressUpload"></div>
+</div>
+
+</div>
+
+</div>
+
+<!-- EMERGENCY CONTACT -->
+
+<div class="section">
+
+<div class="section-title">📞 Emergency Contact</div>
+
+<div class="input-group">
+<label>Name</label>
+<div class="input">
+<input type="text" id="emergencyName">
+</div>
+</div>
+
+<div class="input-group">
+<label>Phone</label>
+<div class="input">
+<input type="tel" id="emergencyPhone">
+</div>
+</div>
+
+</div>
+
+<!-- DECLARATION -->
+
+<div class="section">
+
+<div class="section-title">🩺 Health Declaration</div>
+
+<div class="check">
+
+<label>
+<input type="checkbox" id="c1">
+Information is accurate
+</label>
+
+<label>
+<input type="checkbox" id="c2">
+I agree to donate blood
+</label>
+
+<label>
+<input type="checkbox" id="c3">
+Hospitals may contact me
+</label>
+
+</div>
+
+</div>
+
+<button class="btn" onclick="saveStep4()">Complete Registration ✔</button>
+
+<div class="footer">
+Your identity verification ensures safe donations
+</div>
+
+</div>
+
+<div id="toast"></div>
+
+<script>
+
+const dropArea=document.getElementById("dropArea")
+const fileInput=document.getElementById("idUpload")
+const preview=document.getElementById("preview")
+const progress=document.getElementById("progressUpload")
+
+let uploadedFile=null
+
+dropArea.addEventListener("click",()=>{
+fileInput.click()
+})
+
+fileInput.addEventListener("change",()=>{
+handleFile(fileInput.files[0])
+})
+
+dropArea.addEventListener("dragover",(e)=>{
+e.preventDefault()
+dropArea.classList.add("dragover")
+})
+
+dropArea.addEventListener("dragleave",()=>{
+dropArea.classList.remove("dragover")
+})
+
+dropArea.addEventListener("drop",(e)=>{
+e.preventDefault()
+dropArea.classList.remove("dragover")
+
+let file=e.dataTransfer.files[0]
+handleFile(file)
+})
+
+function handleFile(file){
+
+if(!file) return
+
+if(file.size>2000000){
+showToast("File must be <2MB")
+return
+}
+
+uploadedFile=file
+
+preview.innerHTML=""
+
+if(file.type.includes("image")){
+
+let img=document.createElement("img")
+img.src=URL.createObjectURL(file)
+
+preview.appendChild(img)
+
+}else{
+
+preview.innerHTML="📄 "+file.name
+
+}
+
+/* Upload animation */
+
+let p=0
+
+let interval=setInterval(()=>{
+
+p+=10
+progress.style.width=p+"%"
+
+if(p>=100){
+clearInterval(interval)
+}
+
+},120)
+
+}
+
+function showToast(msg){
+
+let toast=document.getElementById("toast")
+
+toast.innerText=msg
+toast.classList.add("show")
+
+setTimeout(()=>{
+toast.classList.remove("show")
+},2500)
+
+}
+
+function saveStep4(){
+
+let idNumber=document.getElementById("idNumber").value
+let name=document.getElementById("emergencyName").value
+let phone=document.getElementById("emergencyPhone").value
+
+if(!uploadedFile){
+showToast("Upload ID proof")
+return
+}
+
+if(!/^[0-9]{10}$/.test(phone)){
+showToast("Enter valid phone")
+return
+}
+
+let donorData=JSON.parse(localStorage.getItem("donorData"))||{}
+
+donorData.idType=document.getElementById("idType").value
+donorData.idNumber=idNumber
+donorData.emergencyName=name
+donorData.emergencyPhone=phone
+
+localStorage.setItem("donorData",JSON.stringify(donorData))
+
+window.location.href="register_step5.html"
+
+}
+
+</script>
+
+</body>
+</html>

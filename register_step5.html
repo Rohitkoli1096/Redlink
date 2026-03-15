@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Registration Complete</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Inter',sans-serif;
+}
+
+body{
+background:#f8fafc;
+display:flex;
+align-items:center;
+justify-content:center;
+height:100vh;
+}
+
+.container{
+text-align:center;
+max-width:400px;
+padding:30px;
+}
+
+.success-icon{
+font-size:70px;
+color:#ef4444;
+margin-bottom:20px;
+}
+
+h1{
+font-size:24px;
+margin-bottom:10px;
+}
+
+p{
+font-size:14px;
+color:#6b7280;
+margin-bottom:30px;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:12px;
+box-shadow:0 5px 15px rgba(0,0,0,0.05);
+margin-bottom:20px;
+text-align:left;
+}
+
+.card div{
+margin-bottom:8px;
+font-size:14px;
+}
+
+.input{
+width:100%;
+padding:12px;
+border-radius:8px;
+border:1px solid #ddd;
+margin-bottom:10px;
+font-size:14px;
+}
+
+.btn{
+width:100%;
+background:#ef4444;
+color:white;
+border:none;
+padding:14px;
+border-radius:10px;
+font-size:15px;
+cursor:pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="success-icon">✔</div>
+
+<h1>Registration Complete</h1>
+
+<p>You are now registered as a blood donor on RedLink.</p>
+
+<div class="card" id="donorInfo"></div>
+
+<!-- PASSWORD SECTION -->
+
+<div class="card">
+
+<div><b>Set Account Password</b></div>
+
+<input type="password" id="password" class="input" placeholder="Enter Password">
+
+<input type="password" id="confirmPassword" class="input" placeholder="Re-enter Password">
+
+</div>
+
+<button class="btn" onclick="goDashboard()">Go to Dashboard</button>
+
+</div>
+
+<script>
+
+let donor = JSON.parse(localStorage.getItem("donorData"))
+
+if(donor){
+
+document.getElementById("donorInfo").innerHTML = `
+<div><b>Name:</b> ${donor.fullName || ""}</div>
+<div><b>Blood Group:</b> ${donor.bloodGroup || ""}</div>
+<div><b>City:</b> ${donor.city || ""}</div>
+<div><b>Phone:</b> ${donor.phone || ""}</div>
+`
+
+}
+
+function goDashboard(){
+
+let password=document.getElementById("password").value
+let confirmPassword=document.getElementById("confirmPassword").value
+
+let format=/^(?=.*[A-Z])(?=.*[0-9]).{8,}$/
+
+if(password===""){
+alert("Enter password")
+return
+}
+
+if(!format.test(password)){
+alert("Password must contain 8 characters, 1 uppercase and 1 number")
+return
+}
+
+if(password!==confirmPassword){
+alert("Passwords do not match")
+return
+}
+
+let donor = JSON.parse(localStorage.getItem("donorData")) || {}
+
+donor.password=password
+
+localStorage.setItem("donorData",JSON.stringify(donor))
+
+document.getElementById("donorInfo").innerHTML += `
+<div><b>Password:</b> ${password}</div>
+`
+
+setTimeout(()=>{
+window.location.href="dashboard.html"
+},8000)
+
+}
+
+</script>
+
+</body>
+</html>

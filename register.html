@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Donor Registration</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Inter',sans-serif;
+}
+
+body{
+background:#f8fafc;
+color:#111;
+}
+
+.header{
+display:flex;
+align-items:center;
+justify-content:center;
+position:relative;
+padding:18px;
+font-weight:700;
+font-size:20px;
+background:white;
+border-bottom:1px solid #eee;
+}
+
+.back{
+position:absolute;
+left:18px;
+font-size:22px;
+color:#ef4444;
+cursor:pointer;
+}
+
+.page{
+padding:20px;
+max-width:700px;
+margin:auto;
+}
+
+.step{
+display:flex;
+justify-content:space-between;
+margin-bottom:8px;
+font-weight:600;
+}
+
+.progress{
+height:8px;
+background:#fde2e4;
+border-radius:20px;
+overflow:hidden;
+margin-bottom:25px;
+}
+
+.progress-bar{
+height:100%;
+width:40%;
+background:#ef4444;
+}
+
+.photo-section{
+text-align:center;
+margin-bottom:30px;
+}
+
+.photo{
+width:120px;
+height:120px;
+border-radius:50%;
+background:#e5e7eb;
+margin:auto;
+position:relative;
+overflow:hidden;
+box-shadow:0 6px 15px rgba(0,0,0,0.15);
+}
+
+.photo img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+.camera{
+position:absolute;
+bottom:0;
+right:0;
+background:#ef4444;
+width:42px;
+height:42px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+color:white;
+cursor:pointer;
+}
+
+.photo-label{
+font-weight:600;
+margin-top:10px;
+}
+
+.photo-text{
+font-size:13px;
+color:#6b7280;
+}
+
+.section{
+margin-bottom:25px;
+}
+
+.section-title{
+font-weight:700;
+margin-bottom:12px;
+display:flex;
+align-items:center;
+gap:8px;
+}
+
+.input-group{
+margin-bottom:14px;
+}
+
+.input-group label{
+font-size:13px;
+font-weight:600;
+}
+
+.input{
+margin-top:6px;
+background:white;
+border:1px solid #e5e7eb;
+border-radius:10px;
+padding:12px;
+}
+
+.input input,
+.input textarea{
+width:100%;
+border:none;
+outline:none;
+font-size:14px;
+background:none;
+}
+
+.row{
+display:flex;
+gap:10px;
+}
+
+.icon-input{
+display:flex;
+align-items:center;
+gap:8px;
+}
+
+.icon{
+color:#ef4444;
+font-size:16px;
+}
+
+.blood-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:10px;
+}
+
+.blood{
+padding:10px;
+border-radius:10px;
+border:1px solid #ddd;
+text-align:center;
+cursor:pointer;
+font-weight:600;
+background:white;
+}
+
+.blood.active{
+border-color:#ef4444;
+color:#ef4444;
+background:#fee2e2;
+}
+
+.btn{
+width:100%;
+background:#ef4444;
+color:white;
+border:none;
+padding:16px;
+border-radius:12px;
+font-size:16px;
+font-weight:600;
+cursor:pointer;
+margin-top:10px;
+}
+
+.footer{
+text-align:center;
+font-size:12px;
+color:#6b7280;
+margin-top:10px;
+}
+
+.footer span{
+color:#ef4444;
+}
+
+/* Toast Alert */
+
+#toast{
+position:fixed;
+bottom:30px;
+left:50%;
+transform:translateX(-50%);
+background:#111;
+color:#fff;
+padding:12px 18px;
+border-radius:25px;
+font-size:14px;
+opacity:0;
+transition:0.3s;
+z-index:9999;
+}
+
+#toast.show{
+opacity:1;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header">
+<div class="back" onclick="window.location.href='login.html'">←</div>
+Donor Registration
+</div>
+
+<div class="page">
+
+<div class="step">
+<span>Medical Profile</span>
+<span style="color:#ef4444;">Step 2 of 5</span>
+</div>
+
+<div class="progress">
+<div class="progress-bar"></div>
+</div>
+
+<!-- PHOTO -->
+
+<div class="photo-section">
+
+<div class="photo">
+<img id="preview" src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
+
+<label class="camera">
+📷
+<input type="file" hidden id="photo">
+</label>
+
+</div>
+
+<div class="photo-label">Upload Profile Photo</div>
+<p class="photo-text">This photo helps hospitals verify your identity</p>
+
+</div>
+
+<!-- PERSONAL -->
+
+<div class="section">
+
+<div class="section-title">👤 Personal Details</div>
+
+<div class="input-group">
+<label>Full Name</label>
+<div class="input">
+<input type="text" id="fullName" placeholder="Rohit Koli" required>
+</div>
+</div>
+
+<div class="row">
+
+<div class="input-group" style="flex:2">
+<label>Date of Birth</label>
+<div class="input icon-input">
+<span class="icon">📅</span>
+<input type="date" id="dob" required placeholder="dd/mm/yyyy">
+</div>
+</div>
+
+<div class="input-group" style="flex:1">
+<label>Age</label>
+<div class="input">
+<input type="text" id="age" placeholder="Age" readonly>
+</div>
+</div>
+
+</div>
+
+</div>
+
+<!-- BLOOD -->
+
+<div class="section">
+
+<div class="section-title">🩸 Select Blood Group</div>
+
+<div class="blood-grid">
+
+<div class="blood">A+</div>
+<div class="blood">A-</div>
+<div class="blood">B+</div>
+<div class="blood">B-</div>
+<div class="blood">AB+</div>
+<div class="blood">AB-</div>
+<div class="blood">O+</div>
+<div class="blood">O-</div>
+
+</div>
+
+</div>
+
+<!-- ELIGIBILITY -->
+
+<div class="section">
+
+<div class="section-title">🏥 Eligibility Checklist</div>
+
+<div class="row">
+
+<div class="input-group">
+<label>Weight (kg)</label>
+<div class="input">
+<input type="number" id="weight" placeholder="Weight" required>
+</div>
+</div>
+
+<div class="input-group">
+<label>Height (cm)</label>
+<div class="input">
+<input type="number" id="height" placeholder="Height" required>
+</div>
+</div>
+
+</div>
+
+<div class="input-group">
+<label>Last Donation Date</label>
+<div class="input icon-input" style="justify-content:space-between;">
+<span class="icon">🩸</span>
+<input type="date" id="donation" placeholder="Last Donation Date">
+</div>
+</div>
+
+</div>
+
+<!-- ADDRESS -->
+
+<div class="section">
+
+<div class="section-title">🏠 Address Details</div>
+
+<div class="input-group">
+<label>Permanent Address</label>
+<div class="input">
+<textarea rows="3" id="address" placeholder="Enter your permanent address" required></textarea>
+</div>
+</div>
+
+</div>
+
+<button class="btn" onclick="saveStep2()">Continue ✔</button>
+
+<div class="footer">
+By clicking complete you agree to our
+<span>Terms of Service</span> and
+<span>Medical Privacy Policy</span>
+</div>
+
+</div>
+
+<div id="toast"></div>
+
+<script>
+
+// Toast Alert
+function showToast(msg){
+let toast=document.getElementById("toast")
+toast.innerText=msg
+toast.classList.add("show")
+
+setTimeout(()=>{
+toast.classList.remove("show")
+},2500)
+}
+
+// Photo preview
+document.getElementById("photo").addEventListener("change",function(e){
+let file=e.target.files[0]
+if(file){
+document.getElementById("preview").src=URL.createObjectURL(file)
+}
+})
+
+// Blood selection
+document.querySelectorAll(".blood").forEach(btn=>{
+btn.onclick=()=>{
+document.querySelectorAll(".blood").forEach(b=>b.classList.remove("active"))
+btn.classList.add("active")
+}
+})
+
+// Age calculation
+document.getElementById("dob").addEventListener("change",function(){
+
+let birth=new Date(this.value)
+let today=new Date()
+
+let age=today.getFullYear()-birth.getFullYear()
+
+let m=today.getMonth()-birth.getMonth()
+
+if(m<0 || (m===0 && today.getDate()<birth.getDate())){
+age--
+}
+
+document.getElementById("age").value=age
+
+})
+
+// Save Step 2
+function saveStep2(){
+
+let fullName=document.getElementById("fullName").value.trim()
+let dob=document.getElementById("dob").value
+let weight=document.getElementById("weight").value
+let height=document.getElementById("height").value
+let address=document.getElementById("address").value.trim()
+let blood=document.querySelector(".blood.active")
+
+if(fullName===""){
+showToast("Enter your full name")
+return
+}
+
+if(dob===""){
+showToast("Select date of birth")
+return
+}
+
+if(!blood){
+showToast("Select blood group")
+return
+}
+
+if(weight===""){
+showToast("Enter weight")
+return
+}
+
+if(height===""){
+showToast("Enter height")
+return
+}
+
+if(address===""){
+showToast("Enter address")
+return
+}
+
+let donorData=JSON.parse(localStorage.getItem("donorData")) || {}
+
+donorData.fullName=fullName
+donorData.dob=dob
+donorData.age=document.getElementById("age").value
+donorData.bloodGroup=blood.innerText
+donorData.weight=weight
+donorData.height=height
+donorData.lastDonation=document.getElementById("donation").value
+donorData.address=address
+
+localStorage.setItem("donorData",JSON.stringify(donorData))
+
+window.location.href="register_step3.html"
+
+}
+
+</script>
+
+</body>
+</html>

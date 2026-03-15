@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>RedLink Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Inter',sans-serif;
+}
+
+body{
+background:#f4f6fb;
+padding-bottom:110px;
+}
+
+/* HEADER */
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:18px;
+}
+
+.profile{
+display:flex;
+gap:10px;
+align-items:center;
+}
+
+.avatar{
+width:40px;
+height:40px;
+border-radius:50%;
+background:#ddd;
+background-size:cover;
+background-position:center;
+}
+
+.icon-btn{
+background:white;
+padding:10px;
+border-radius:12px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+cursor:pointer;
+}
+
+/* HERO */
+
+.hero{
+padding:0 20px;
+margin-bottom:10px;
+}
+
+.hero h1{
+font-size:30px;
+font-weight:800;
+}
+
+.hero span{
+color:#b30000;
+font-style:italic;
+}
+
+/* CARD */
+
+.card{
+background:white;
+margin:15px 20px;
+padding:20px;
+border-radius:20px;
+box-shadow:0 10px 30px rgba(0,0,0,0.07);
+}
+
+/* BLOOD */
+
+.blood-card{
+background:linear-gradient(135deg,#b30000,#e63946);
+color:white;
+}
+
+.blood-type{
+font-size:50px;
+font-weight:800;
+}
+
+/* PROGRESS */
+
+.progress{
+height:10px;
+background:#cbd5e1;
+border-radius:10px;
+margin-top:10px;
+overflow:hidden;
+}
+
+.progress-bar{
+height:100%;
+width:0%;
+background:white;
+transition:1s;
+}
+
+/* HEALTH */
+
+.health-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+padding:0 20px;
+}
+
+.health-box{
+background:white;
+border-radius:18px;
+padding:15px;
+text-align:center;
+box-shadow:0 6px 18px rgba(0,0,0,0.05);
+}
+
+/* REQUEST */
+
+.request{
+background:white;
+margin:10px 20px;
+padding:15px;
+border-radius:18px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+box-shadow:0 6px 15px rgba(0,0,0,0.05);
+border-left:4px solid #e63946;
+}
+
+.request button{
+background:#e63946;
+border:none;
+color:white;
+padding:6px 12px;
+border-radius:8px;
+cursor:pointer;
+}
+
+/* DONATE BUTTON */
+
+.fab{
+position:fixed;
+bottom:90px;
+right:20px;
+background:#b30000;
+color:white;
+padding:14px 22px;
+border-radius:14px;
+display:flex;
+gap:10px;
+align-items:center;
+font-weight:600;
+cursor:pointer;
+}
+
+/* NAV */
+
+.nav{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+background:white;
+display:flex;
+justify-content:space-around;
+padding:12px;
+box-shadow:0 -5px 20px rgba(0,0,0,0.1);
+}
+
+.nav-item{
+text-align:center;
+font-size:12px;
+color:#666;
+}
+
+.nav-item.active{
+color:#b30000;
+}
+
+.nav-item i{
+display:block;
+font-size:20px;
+margin-bottom:3px;
+}
+
+/* APP NOTIFICATION */
+
+.toast{
+position:fixed;
+top:20px;
+left:50%;
+transform:translateX(-50%);
+background:#111;
+color:white;
+padding:12px 18px;
+border-radius:20px;
+font-size:14px;
+opacity:0;
+transition:.3s;
+z-index:999;
+}
+
+.toast.show{
+opacity:1;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="toast" class="toast"></div>
+
+<!-- HEADER -->
+
+<div class="header">
+
+<div class="profile">
+
+<div class="avatar" id="avatar"></div>
+
+<div>
+<p>Welcome back</p>
+<strong id="username">Donor</strong>
+</div>
+
+</div>
+
+<div class="icon-btn" onclick="showToast('No new notifications')">
+<i class="fa-solid fa-bell"></i>
+</div>
+
+</div>
+
+<!-- HERO -->
+
+<div class="hero">
+
+<h1>Your life-force <br> is <span>active.</span></h1>
+
+</div>
+
+<!-- BLOOD GROUP -->
+
+<div class="card blood-card">
+
+<p>BLOOD GROUP</p>
+
+<div class="blood-type" id="blood">--</div>
+
+</div>
+
+<!-- NEXT ELIGIBILITY -->
+
+<div class="card" style="background:#114b6c;color:white;">
+
+<h3><i class="fa-solid fa-calendar"></i> Next Eligibility</h3>
+
+<h1 id="days">--</h1>
+
+<p>Days remaining</p>
+
+<div class="progress">
+
+<div class="progress-bar" id="progress"></div>
+
+</div>
+
+</div>
+
+<!-- HEALTH -->
+
+<h3 style="padding:20px;">Health Check</h3>
+
+<div class="health-grid">
+
+<div class="health-box">
+
+<i class="fa-solid fa-heart-pulse"></i>
+
+<p>Hemoglobin</p>
+
+<h2 id="hb">--</h2>
+
+</div>
+
+<div class="health-box">
+
+<i class="fa-solid fa-flask"></i>
+
+<p>Iron Level</p>
+
+<h2 id="iron">--</h2>
+
+</div>
+
+</div>
+
+<!-- REQUESTS -->
+
+<h3 style="padding:20px;">Emergency Requests</h3>
+
+<div id="requests"></div>
+
+<!-- DONATE BUTTON -->
+
+<div class="fab" onclick="donate()">
+
+<i class="fa-solid fa-droplet"></i>
+
+Donate Now
+
+</div>
+
+<!-- NAVBAR -->
+
+<div class="nav">
+
+<div class="nav-item active">
+<i class="fa-solid fa-house"></i>
+Home
+</div>
+
+<div class="nav-item">
+<i class="fa-solid fa-calendar"></i>
+Appointments
+</div>
+
+<div class="nav-item" onclick="window.location.href='profile.html'">
+<i class="fa-solid fa-user"></i>
+Profile
+</div>
+
+</div>
+
+<script>
+
+/* TOAST MESSAGE */
+
+function showToast(msg){
+
+const toast=document.getElementById("toast")
+
+toast.innerText=msg
+toast.classList.add("show")
+
+setTimeout(()=>{
+toast.classList.remove("show")
+},2500)
+
+}
+
+/* LOAD DONOR DATA */
+
+const donor=JSON.parse(localStorage.getItem("donorData"))
+
+if(donor){
+
+document.getElementById("username").innerText = donor.fullName || "Donor"
+
+document.getElementById("blood").innerText = donor.bloodGroup || "--"
+
+if(donor.profileImage){
+
+document.getElementById("avatar").style.backgroundImage =
+"url("+donor.profileImage+")"
+
+}
+
+}
+
+/* DEMO HEALTH */
+
+document.getElementById("hb").innerText = "14.2"
+document.getElementById("iron").innerText = "85"
+
+/* ELIGIBILITY */
+
+let days = 14
+
+document.getElementById("days").innerText = days
+
+let progress = Math.max(0,100-days*3)
+
+document.getElementById("progress").style.width = progress+"%"
+
+/* REQUEST DATA */
+
+const requests=[
+
+{blood:"O+",hospital:"City Hospital",distance:"1.2 km"},
+{blood:"AB-",hospital:"Red Cross Center",distance:"3.5 km"}
+
+]
+
+const container=document.getElementById("requests")
+
+requests.forEach(r=>{
+
+container.innerHTML+=`
+
+<div class="request">
+
+<div>
+
+<strong>${r.blood}</strong><br>
+${r.hospital}<br>
+<small>${r.distance}</small>
+
+</div>
+
+<button onclick="respond('${r.blood}')">Respond</button>
+
+</div>
+
+`
+
+})
+
+/* BUTTON ACTIONS */
+
+function donate(){
+
+showToast("Opening nearby donation centers")
+
+}
+
+function respond(blood){
+
+showToast("You responded to "+blood+" request")
+
+}
+
+</script>
+
+</body>
+</html> 
